@@ -12,12 +12,17 @@ COPY package.json package-lock.json* ./
 COPY backend/package.json* ./backend/
 COPY frontend/package.json* ./frontend/
 
-# Create empty package.json if not exists
-RUN test -f backend/package.json || echo '{}' > backend/package.json
-RUN test -f frontend/package.json || echo '{}' > frontend/package.json
+# Debug: List contents and package files
+RUN echo "Root directory contents:" && ls -la
+RUN echo "Backend directory contents:" && ls -la backend
+RUN echo "Frontend directory contents:" && ls -la frontend
 
-# Install dependencies
-RUN npm ci || npm install
+# Create empty package.json if not exists
+RUN test -f backend/package.json || (echo "Creating empty backend package.json" && echo '{}' > backend/package.json)
+RUN test -f frontend/package.json || (echo "Creating empty frontend package.json" && echo '{}' > frontend/package.json)
+
+# Install dependencies with verbose output
+RUN npm install --verbose || npm install
 
 # Build stage
 FROM base AS builder
