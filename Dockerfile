@@ -1,17 +1,24 @@
 FROM node:18-alpine
 
+# Install global dependencies
+RUN npm install -g npm@latest
+
 WORKDIR /app
+
+# Copy package files first
+COPY package*.json ./
+COPY backend/package*.json ./backend/
+COPY frontend/package*.json ./frontend/
+
+# Install root and project dependencies
+RUN npm install
+RUN npm run install:backend
+RUN npm run install:frontend
 
 # Copy entire project
 COPY . .
 
-# Install root dependencies
-RUN npm install
-
-# Install backend and frontend dependencies
-RUN npm run install:backend && npm run install:frontend
-
-# Build backend and frontend
+# Build the project
 RUN npm run build
 
 # Expose port
