@@ -21,8 +21,8 @@ RUN echo "Frontend directory contents:" && ls -la frontend
 RUN test -f backend/package.json || (echo "Creating empty backend package.json" && echo '{}' > backend/package.json)
 RUN test -f frontend/package.json || (echo "Creating empty frontend package.json" && echo '{}' > frontend/package.json)
 
-# Install dependencies with verbose output
-RUN npm install --verbose || npm install
+# Install dependencies with verbose output and force clean install
+RUN npm cache clean --force && npm install --verbose
 
 # Build stage
 FROM base AS builder
