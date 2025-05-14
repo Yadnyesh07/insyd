@@ -2,15 +2,14 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-# Copy root package files
-COPY package*.json ./
+# Copy entire project
+COPY . .
 
-# Install dependencies
-RUN npm ci
+# Install root dependencies
+RUN npm install
 
-# Copy backend and frontend
-COPY backend ./backend
-COPY frontend ./frontend
+# Install backend and frontend dependencies
+RUN npm run install:backend && npm run install:frontend
 
 # Build backend and frontend
 RUN npm run build
