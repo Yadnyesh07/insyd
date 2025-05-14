@@ -1,8 +1,5 @@
 FROM node:18-alpine
 
-# Install global dependencies
-RUN npm install -g npm@latest
-
 WORKDIR /app
 
 # Copy package files first
@@ -10,7 +7,7 @@ COPY package*.json ./
 COPY backend/package*.json ./backend/
 COPY frontend/package*.json ./frontend/
 
-# Install root and project dependencies
+# Install dependencies
 RUN npm install
 RUN npm run install:backend
 RUN npm run install:frontend
