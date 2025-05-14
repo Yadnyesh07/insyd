@@ -1,8 +1,8 @@
 [phases.setup]
-nixPkgs = ['nodejs', 'npm']
+provides = ['nodejs']
 
 [phases.install]
-cmds = ['npm install']
+cmds = ['npm ci']
 
 [phases.build]
 cmds = ['npm run build:backend', 'npm run build:frontend']
