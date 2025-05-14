@@ -7,6 +7,7 @@ const cors = require('cors');
 
 const User = require('./models/User');
 const Notification = require('./models/Notification');
+const RecommendationService = require('./services/recommendationService');
 
 const app = express();
 const server = http.createServer(app);
@@ -50,6 +51,16 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     console.log('Client disconnected');
+  });
+
+  // Generate recommendations periodically
+  socket.on('generateRecommendations', async (userId) => {
+    try {
+      const recommendations = await RecommendationService.generateRecommendations(userId);
+      socket.emit('recommendations', recommendations);
+    } catch (error) {
+      console.error('Recommendation generation failed:', error);
+    }
   });
 });
 
